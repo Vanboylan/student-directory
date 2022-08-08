@@ -14,9 +14,21 @@ students = [
     "Joffrey Baratheon",
     "Norman Bates"]
 
+def print_header
     puts "The students of Villains Academy\n-------------"
-    students.each do |student|
+end
+
+def print_students(names)
+    names.each do |student|
         puts student
     end
+end
+
+def print_footer(names)
 #then we print these three lines with no new line. If using \n as new line, use double quotes
-print "Overall, we have #{students.count} great students"
+print "Overall, we have #{names.count} great students"
+end
+
+print_header
+print_students(students)
+print_footer(students)
