@@ -3,8 +3,8 @@
 #alternative is for us to use puts ("string") but we don't need to
 def input_students
   require 'date'
-  puts "Please type the names of the students"
-  puts "To finish, just hit return twice"
+  puts "Please type the names of the students".center(100, "*")
+  puts "To finish, just hit return twice".center(100, "*")
 
   students = []
 
@@ -13,17 +13,17 @@ def input_students
             "July", "August", "September", "October", "November", "December"]
 
   while !name.empty? do
-    puts "What cohort are you in? Type the month."
+    puts "What cohort are you in? Type the month.".center(100, "*")
     cohort = gets.chomp.capitalize
     until cohorts.include?(cohort)
-      puts "What cohort are you in? Type the month."
+      puts "What cohort are you in? Type the month.".center(100, "*")
       cohort = gets.chomp.capitalize
       if cohort.empty?
         cohort = Date.today.strftime("%B")
         break
       end
     end
-    puts "#{name} is in the #{cohort} cohort"
+    puts "#{name} is in the #{cohort} cohort".center(100, "*")
     puts "And their favourite hobby?".center(100, "*")
     hobby = gets.chomp
     puts "#{name}'s favourite hobby is #{hobby}".center(100, "*")
@@ -39,8 +39,8 @@ def input_students
     else
       puts "Now we have #{students.count} student".center(100, "*")
     end
-    puts "Please type the names of the students"
-    puts "To finish, just hit return twice."
+    puts "Please type the names of the students".center(100, "*")
+    puts "To finish, just hit return twice.".center(100, "*")
     name = gets.chomp
   end
 
@@ -49,13 +49,14 @@ def input_students
 end
     
 def print_header
-  puts "The students of Villains Academy\n-------------"
+  puts "The students of Villains Academy".center(100, "*")
+  puts "-------------".center(100, "*")
 end
 
 def print_students(students)
   counter = 0
   until counter == students.count - 1
-    puts "#{counter + 1} #{students[counter][:name]}, #{students[counter][:cohort]}"
+    puts "#{counter + 1} #{students[counter][:name]}, #{students[counter][:cohort]}".center(100, "*")
     counter += 1
   end
 end
@@ -63,16 +64,16 @@ end
 def print_footer(students)
 #then we print these three lines with no new line. If using \n as new line, use double quotes
   if students.count != 1
-    puts "Overall, we have #{students.count} great students"
+    puts "Overall, we have #{students.count} great students".center(100, "*")
   else
-    puts "Overall, we have #{students.count} great student"
+    puts "Overall, we have #{students.count} great student".center(100, "*")
   end
 end
 
 def specific_letter(students)
   students.each_with_index do |student, index|
     if student[:name][0].upcase == "A"
-      puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)"
+      puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)".center(100, "*")
     end
   end
 end
@@ -80,7 +81,7 @@ end
 def letter_count(students)
   students.each_with_index do |student, index|
     if student[:name].length <= 12
-      puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)"
+      puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)".center(100, "*")
     end
   end
 end
