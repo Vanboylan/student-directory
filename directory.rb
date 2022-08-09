@@ -54,10 +54,16 @@ def print_header
 end
 
 def print_students(students)
+  cohorts = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"]
   counter = 0
-  until counter == students.count - 1
-    puts "#{counter + 1} #{students[counter][:name]}, #{students[counter][:cohort]}".center(100, "*")
-    counter += 1
+  until counter == 12
+    students.each do |student|
+      if student[:cohort] == cohorts[counter].to_sym
+        puts "#{student[:name]}, #{student[:cohort]}".center(100, "*")
+      end
+    end
+  counter += 1
   end
 end
 
