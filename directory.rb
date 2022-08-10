@@ -8,16 +8,16 @@ def input_students
 
   students = []
 
-  name = gets.chomp
+  name = gets.strip
   cohorts = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"]
 
   while !name.empty? do
     puts "What cohort are you in? Type the month.".center(100, "*")
-    cohort = gets.chomp.capitalize
+    cohort = gets.strip.capitalize
     until cohorts.include?(cohort)
       puts "What cohort are you in? Type the month.".center(100, "*")
-      cohort = gets.chomp.capitalize
+      cohort = gets.strip.capitalize
       if cohort.empty?
         cohort = Date.today.strftime("%B")
         break
@@ -25,13 +25,13 @@ def input_students
     end
     puts "#{name} is in the #{cohort} cohort".center(100, "*")
     puts "And their favourite hobby?".center(100, "*")
-    hobby = gets.chomp
+    hobby = gets.strip
     puts "#{name}'s favourite hobby is #{hobby}".center(100, "*")
     puts "Where were they born?".center(100, "*")
-    country = gets.chomp
+    country = gets.strip
     puts "#{name} was born in #{country}".center(100, "*")
     puts "And how tall are they in cm?".center(100, "*")
-    height = gets.chomp
+    height = gets.strip
     puts "#{name} is #{height}cm tall".center(100, "*")
     students << {name: name, cohort: cohort.to_sym, hobby: hobby, country: country, height: height}
     if students.count != 1
@@ -41,7 +41,7 @@ def input_students
     end
     puts "Please type the names of the students".center(100, "*")
     puts "To finish, just hit return twice.".center(100, "*")
-    name = gets.chomp
+    name = gets.strip
   end
 
   students
