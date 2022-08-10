@@ -24,16 +24,7 @@ def input_students
       end
     end
     puts "#{name} is in the #{cohort} cohort".center(100, "*")
-    puts "And their favourite hobby?".center(100, "*")
-    hobby = gets.strip
-    puts "#{name}'s favourite hobby is #{hobby}".center(100, "*")
-    puts "Where were they born?".center(100, "*")
-    country = gets.strip
-    puts "#{name} was born in #{country}".center(100, "*")
-    puts "And how tall are they in cm?".center(100, "*")
-    height = gets.strip
-    puts "#{name} is #{height}cm tall".center(100, "*")
-    @students << {name: name, cohort: cohort.to_sym, hobby: hobby, country: country, height: height}
+    @students << {name: name, cohort: cohort.to_sym}
     if @students.count != 1
       puts "Now we have #{@students.count} students".center(100, "*")
     else
@@ -92,6 +83,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save students to CSV file"
+  puts "4. Load students from CSV file"
   puts "9. Exit"
 end
 
@@ -113,6 +105,8 @@ def process(selection)
       show_students
     when "3"
       save_students
+    when "4"
+      load_students
     when "9"
       exit
     else
@@ -127,6 +121,16 @@ def interactive_menu
   end
 end
 
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",")
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+  puts "Students loaded"
+end
+
 def save_students
   file = File.open("students.csv", "w")
   @students.each do |student|
@@ -135,7 +139,7 @@ def save_students
     file.puts(csv_line)
   end
   file.close
-  puts "File saved as "students.csv"".center(100, "*")
+  puts "File saved".center(100, "*")
 end
 
 interactive_menu
