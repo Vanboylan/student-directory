@@ -1,21 +1,23 @@
 
 #firstly we puts the list of students, new line after each due to method.
 #alternative is for us to use puts ("string") but we don't need to
+@students = []
+@@cohorts = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"]
+
 def input_students
   require 'date'
   puts "Please type the names of the students".center(100, "*")
   puts "To finish, just hit return twice".center(100, "*")
 
-  students = []
-
   name = gets.strip
-  cohorts = ["January", "February", "March", "April", "May", "June",
+  @cohorts = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"]
 
   while !name.empty? do
     puts "What cohort are you in? Type the month.".center(100, "*")
     cohort = gets.strip.capitalize
-    until cohorts.include?(cohort)
+    until @cohorts.include?(cohort)
       puts "What cohort are you in? Type the month.".center(100, "*")
       cohort = gets.strip.capitalize
       if cohort.empty?
@@ -33,18 +35,18 @@ def input_students
     puts "And how tall are they in cm?".center(100, "*")
     height = gets.strip
     puts "#{name} is #{height}cm tall".center(100, "*")
-    students << {name: name, cohort: cohort.to_sym, hobby: hobby, country: country, height: height}
-    if students.count != 1
-      puts "Now we have #{students.count} students".center(100, "*")
+    @students << {name: name, cohort: cohort.to_sym, hobby: hobby, country: country, height: height}
+    if @students.count != 1
+      puts "Now we have #{@students.count} students".center(100, "*")
     else
-      puts "Now we have #{students.count} student".center(100, "*")
+      puts "Now we have #{@students.count} student".center(100, "*")
     end
     puts "Please type the names of the students".center(100, "*")
     puts "To finish, just hit return twice.".center(100, "*")
     name = gets.strip
   end
 
-  students
+  @students
 
 end
     
@@ -53,63 +55,66 @@ def print_header
   puts "-------------".center(100, "*")
 end
 
-def print_students(students)
-  if students.count < 1
-    puts "No students to print!"
-  else
-    cohorts = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"]
-    counter = 0
-    until counter == 12
-      students.each do |student|
-        if student[:cohort] == cohorts[counter].to_sym
-          puts "#{student[:name]}, #{student[:cohort]}".center(100, "*")
-        end
-      end
-    counter += 1
+def print_students
+  counter = 0
+  until counter == 12
+    @students.each do |student|
+      puts "#{student[:name]}, #{student[:cohort]}".center(100, "*") unless student[:cohort] != @cohorts[counter].to_sym
     end
+    counter += 1
   end
 end
 
-def print_footer(students)
+def print_footer
 #then we print these three lines with no new line. If using \n as new line, use double quotes
-  if students.count != 1
-    puts "Overall, we have #{students.count} great students".center(100, "*")
+  if @students.count != 1
+    puts "Overall, we have #{@students.count} great students".center(100, "*")
   else
-    puts "Overall, we have #{students.count} great student".center(100, "*")
+    puts "Overall, we have #{@students.count} great student".center(100, "*")
   end
 end
 
-def specific_letter(students)
-  students.each_with_index do |student, index|
+def specific_letter
+  @students.each_with_index do |student, index|
     if student[:name][0].upcase == "A"
       puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)".center(100, "*")
     end
   end
 end
 
-def letter_count(students)
-  students.each_with_index do |student, index|
+def letter_count
+  @students.each_with_index do |student, index|
     if student[:name].length <= 12
       puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)".center(100, "*")
     end
   end
 end
 
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  if @students.count < 1
+    puts "No students to print!".center(100, "*")
+  else
+    print_header
+    print_students
+    print_footer
+  end
+end
+
 def interactive_menu
-  students = []
   loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
+  print_menu
     selection = gets.chomp
     case selection
       when "1"
-        students = input_students
+        input_students
       when "2"
-        print_header
-        print_students(students)
-        print_footer(students)
+        show_students
       when "9"
         exit
       else
