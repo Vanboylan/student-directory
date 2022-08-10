@@ -10,14 +10,14 @@ def input_students
   puts "Please type the names of the students".center(100, "*")
   puts "To finish, just hit return twice".center(100, "*")
 
-  name = gets.strip
+  name = STDIN.gets.strip
 
   while !name.empty? do
     puts "What cohort are you in? Type the month.".center(100, "*")
-    cohort = gets.strip.capitalize
+    cohort = STDIN.gets.strip.capitalize
     until @cohorts.include?(cohort)
       puts "What cohort are you in? Type the month.".center(100, "*")
-      cohort = gets.strip.capitalize
+      cohort = STDIN.gets.strip.capitalize
       if cohort.empty?
         cohort = Date.today.strftime("%B")
         break
@@ -32,7 +32,7 @@ def input_students
     end
     puts "Please type the names of the students".center(100, "*")
     puts "To finish, just hit return twice.".center(100, "*")
-    name = gets.strip
+    name = STDIN.gets.strip
   end
 
   @students
@@ -117,12 +117,12 @@ end
 def interactive_menu
   loop do
   print_menu
-  process(gets.strip)
+  process(STDIN.gets.strip)
   end
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym}
@@ -140,6 +140,18 @@ def save_students
   end
   file.close
   puts "File saved".center(100, "*")
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exist?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}".center(100, "*")
+  else
+    puts "Sorry, #{filename} does not exist"
+    exit
+  end
 end
 
 interactive_menu
