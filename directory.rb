@@ -24,7 +24,7 @@ def input_students
       end
     end
     puts "#{name} is in the #{cohort} cohort".center(100, "*")
-    @students << {name: name, cohort: cohort.to_sym}
+    push_students(name, cohort)
     if @students.count != 1
       puts "Now we have #{@students.count} students".center(100, "*")
     else
@@ -125,7 +125,7 @@ def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym}
+    push_students(name, cohort)
   end
   file.close
   puts "Students loaded"
@@ -152,6 +152,10 @@ def try_load_students
     puts "Sorry, #{filename} does not exist"
     exit
   end
+end
+
+def push_students(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
 end
 
 interactive_menu
