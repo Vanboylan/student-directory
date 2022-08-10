@@ -125,17 +125,33 @@ def process(selection)
   end
 end
 
-def interactive_menu
+def load_intro
   if @students.empty?
-    load_students
-  end
-  loop do
-  print_menu
-  process(STDIN.gets.strip)
+    loop do
+      puts "Would you like to load from a file? Y/N"
+      answer = STDIN.gets.strip
+      if answer.upcase == "Y"
+        load_students
+        break
+      elsif answer.upcase == "N"
+        puts "No problem. No students loaded"
+        break
+      end
+    end
   end
 end
 
-def load_students(filename = "students.csv")
+def interactive_menu
+  load_intro
+  loop do
+    print_menu
+    process(STDIN.gets.strip)
+  end
+end
+
+def load_students
+  puts "Where would you like to load from?"
+  filename = STDIN.gets.strip
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
@@ -146,14 +162,16 @@ def load_students(filename = "students.csv")
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "Where would you like to save?"
+  filename = STDIN.gets.strip
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts(csv_line)
   end
   file.close
-  puts "File saved".center(100, "*")
+  puts "File saved in #{filename}".center(100, "*")
 end
 
 def try_load_students
