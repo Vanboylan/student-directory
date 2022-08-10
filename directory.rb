@@ -7,16 +7,15 @@
 
 def input_students
   require 'date'
-  puts "Please type the names of the students".center(100, "*")
-  puts "To finish, just hit return twice".center(100, "*")
+  name_prompt
 
   name = STDIN.gets.strip
 
   while !name.empty? do
-    puts "What cohort are you in? Type the month.".center(100, "*")
+    cohort_prompt
     cohort = STDIN.gets.strip.capitalize
     until @cohorts.include?(cohort)
-      puts "What cohort are you in? Type the month.".center(100, "*")
+      cohort_prompt
       cohort = STDIN.gets.strip.capitalize
       if cohort.empty?
         cohort = Date.today.strftime("%B")
@@ -25,18 +24,30 @@ def input_students
     end
     puts "#{name} is in the #{cohort} cohort".center(100, "*")
     push_students(name, cohort)
-    if @students.count != 1
-      puts "Now we have #{@students.count} students".center(100, "*")
-    else
-      puts "Now we have #{@students.count} student".center(100, "*")
-    end
-    puts "Please type the names of the students".center(100, "*")
-    puts "To finish, just hit return twice.".center(100, "*")
+    student_counter
+    name_prompt
     name = STDIN.gets.strip
   end
 
   @students
 
+end
+
+def name_prompt
+  puts "Please type the names of the students".center(100, "*")
+  puts "To finish, just hit return twice.".center(100, "*")
+end
+
+def cohort_prompt
+  puts "What cohort are you in? Type the month.".center(100, "*")
+end
+
+def student_counter
+  if @students.count != 1
+    puts "Now we have #{@students.count} students".center(100, "*")
+  else
+    puts "Now we have #{@students.count} student".center(100, "*")
+  end
 end
     
 def print_header
@@ -115,6 +126,9 @@ def process(selection)
 end
 
 def interactive_menu
+  if @students.empty?
+    load_students
+  end
   loop do
   print_menu
   process(STDIN.gets.strip)
