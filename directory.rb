@@ -2,7 +2,7 @@
 #firstly we puts the list of students, new line after each due to method.
 #alternative is for us to use puts ("string") but we don't need to
 @students = []
-@@cohorts = ["January", "February", "March", "April", "May", "June",
+@cohorts = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"]
 
 def input_students
@@ -11,8 +11,6 @@ def input_students
   puts "To finish, just hit return twice".center(100, "*")
 
   name = gets.strip
-  @cohorts = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"]
 
   while !name.empty? do
     puts "What cohort are you in? Type the month.".center(100, "*")
@@ -93,6 +91,7 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
+  puts "3. Save students to CSV file"
   puts "9. Exit"
 end
 
@@ -106,21 +105,37 @@ def show_students
   end
 end
 
+def process(selection)
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "3"
+      save_students
+    when "9"
+      exit
+    else
+      puts "I don't know what you meant! Try again"
+  end
+end
+
 def interactive_menu
   loop do
   print_menu
-    selection = gets.chomp
-    case selection
-      when "1"
-        input_students
-      when "2"
-        show_students
-      when "9"
-        exit
-      else
-        puts "I don't know what you meant! Try again"
-    end
+  process(gets.strip)
   end
+end
+
+def save_students
+  file = File.open("students.csv", "w")
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(",")
+    file.puts(csv_line)
+  end
+  file.close
+  puts "File saved as "students.csv"".center(100, "*")
 end
 
 interactive_menu
