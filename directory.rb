@@ -74,22 +74,6 @@ def print_footer
   end
 end
 
-def specific_letter
-  @students.each_with_index do |student, index|
-    if student[:name][0].upcase == "A"
-      puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)".center(100, "*")
-    end
-  end
-end
-
-def letter_count
-  @students.each_with_index do |student, index|
-    if student[:name].length <= 12
-      puts "#{index+1} #{student[:name]} (#{student[:cohort]} cohort)".center(100, "*")
-    end
-  end
-end
-
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
@@ -108,15 +92,23 @@ def show_students
   end
 end
 
+def selection_feedback(selection)
+  puts "You chose option: #{selection}".center(100, "*")
+end
+
 def process(selection)
   case selection
     when "1"
+      selection_feedback(selection)
       input_students
     when "2"
+      selection_feedback(selection)
       show_students
     when "3"
+      selection_feedback(selection)
       save_students
     when "4"
+      selection_feedback(selection)
       load_students
     when "9"
       exit
@@ -162,15 +154,14 @@ def load_students
 end
 
 def save_students
-  puts "Where would you like to save?"
+  puts "Type the filename you'd like to save to"
   filename = STDIN.gets.strip
-  file = File.open(filename, "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts(csv_line)
+  file = File.open(filename, "w") do |f|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      f << student_data.join(",")
+    end 
   end
-  file.close
   puts "File saved in #{filename}".center(100, "*")
 end
 
