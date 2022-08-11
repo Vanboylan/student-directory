@@ -142,24 +142,26 @@ def interactive_menu
 end
 
 def load_students
+  require "csv"
   puts "Where would you like to load from?"
   filename = STDIN.gets.strip
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
+  file = File.open(filename, "r") do |f|
+    f.readlines.each do |line|
+    name, cohort = line.parse_csv
     push_students(name, cohort)
+    end
   end
-  file.close
   puts "Students loaded"
 end
 
 def save_students
+  require "csv"
   puts "Type the filename you'd like to save to"
   filename = STDIN.gets.strip
   file = File.open(filename, "w") do |f|
     @students.each do |student|
       student_data = [student[:name], student[:cohort]]
-      f << student_data.join(",")
+      f << student_data.to_csv
     end 
   end
   puts "File saved in #{filename}".center(100, "*")
